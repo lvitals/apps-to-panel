@@ -4,5 +4,6 @@
   "uuid": "apps-to-panel@leavitals",
   "shell-version": [
     "3.34"
-  ]
+  ],
+  "url": "https://github.com/lvitals/apps-to-panel"
 }
