@@ -203,7 +203,7 @@ function enable()
 {
     activities.container.hide();
 
-    if (!Prefs.settings.get_boolean('show-dash')) {
+    if (Prefs.settings.get_boolean('show-dash')) {
         dash_hide();
     }
 

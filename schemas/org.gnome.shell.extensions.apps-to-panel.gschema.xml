@@ -22,7 +22,7 @@
         <description>Set view for activities to panel.</description>
     </key>
     <key type="b" name="show-dash">
-        <default>false</default>
+        <default>true</default>
         <summary>Show Dash</summary>
         <description>Show components Dash.</description>
     </key>
