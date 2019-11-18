@@ -1,4 +1,4 @@
-# Desktop Icons
+# Apps to Panel
 
 ## What  is it
 
