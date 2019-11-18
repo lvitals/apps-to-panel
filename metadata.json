@@ -1,0 +1,8 @@
+{
+  "name": "Apps to Panel",
+  "description": "This extension turns the Activities button into two button with icon or text to select Applications or Workspaces in the Overview.\n\nChange the same view for button to icon or text.",
+  "uuid": "apps-to-panel@leavitals",
+  "shell-version": [
+    "3.34"
+  ]
+}
