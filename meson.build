@@ -14,6 +14,7 @@ extensions_dir = join_paths(prefix, 'share', 'gnome-shell', 'extensions', 'apps-
 
 install_data([
     'prefs.js',
+    'dash.js',
     'extension.js',
     'metadata.json',
     'stylesheet.css'

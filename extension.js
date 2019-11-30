@@ -25,6 +25,7 @@ const Clutter = imports.gi.Clutter;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Prefs = Me.imports.prefs;
+const Dash = Me.imports.dash;
 
 let activities;
 let applicationsButton;
@@ -175,25 +176,11 @@ function changePage(appsButtonChecked)
     }
 }
 
-function dash_hide() {
-    // global.log("show dash");
-    Main.overview._dash.actor.hide();
-    Main.overview.viewSelector.actor.set_x(0);
-    Main.overview.viewSelector.actor.set_width(0);
-    Main.overview.viewSelector.actor.queue_redraw();
-}
-
-function dash_show() {
-    // global.log("hide dash");
-    Main.overview._dash.actor.show();
-    Main.overview.viewSelector.actor.set_x(this.old_x);
-    Main.overview.viewSelector.actor.set_width(this.old_width);
-    Main.overview.viewSelector.actor.queue_redraw();
-}
-
 function init()
 {
     activities = Main.panel.statusArea['activities'];
+
+    this.dash = new Dash.Dash();
 
     Prefs.init();
     Prefs.settings.connect('changed', _refresh);
@@ -203,8 +190,10 @@ function enable()
 {
     activities.container.hide();
 
+    this.dash.hideShowAppsButton();
+
     if (Prefs.settings.get_boolean('show-dash')) {
-        dash_hide();
+        this.dash.hideDash();
     }
 
     applicationsButton = new ApplicationsIconMenu();
@@ -219,8 +208,13 @@ function disable()
     applicationsButton.destroy();
     activitiesButton.destroy();
 
-    dash_show();
+    // dash_show();
+    this.dash.showDash();
     activities.container.show();
+
+    this.dash.showShowAppsButton();
+
+    //  Main.overview._dash.showAppsButton.show();
 }
 
 var _refresh = function ()
@@ -228,4 +222,3 @@ var _refresh = function ()
     disable();
     enable();
 }
-
