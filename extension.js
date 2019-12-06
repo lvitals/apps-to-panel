@@ -190,11 +190,10 @@ function enable()
 {
     activities.container.hide();
 
-    this.dash.hideShowAppsButton();
-
-    if (Prefs.settings.get_boolean('show-dash')) {
+    if (Prefs.settings.get_boolean('hide-dash')) {
         this.dash.hideDash();
     }
+    this.dash.hideShowAppsButton();
 
     applicationsButton = new ApplicationsIconMenu();
     activitiesButton = new ActivitiesIconMenu();
@@ -208,13 +207,10 @@ function disable()
     applicationsButton.destroy();
     activitiesButton.destroy();
 
-    // dash_show();
     this.dash.showDash();
-    activities.container.show();
-
     this.dash.showShowAppsButton();
 
-    //  Main.overview._dash.showAppsButton.show();
+    activities.container.show();
 }
 
 var _refresh = function ()

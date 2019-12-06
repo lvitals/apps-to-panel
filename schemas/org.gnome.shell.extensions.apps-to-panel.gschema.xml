@@ -21,10 +21,10 @@
         <summary>Activities View</summary>
         <description>Set view for activities to panel.</description>
     </key>
-    <key type="b" name="show-dash">
-        <default>true</default>
-        <summary>Show Dash</summary>
-        <description>Show components Dash.</description>
+    <key type="b" name="hide-dash">
+        <default>false</default>
+        <summary>Hide Dash</summary>
+        <description>Hide the dash from the activities overview.</description>
     </key>
   </schema>
 </schemalist>
