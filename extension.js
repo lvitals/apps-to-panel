@@ -70,17 +70,17 @@ const ApplicationsIconMenu = new Lang.Class({
 
         Main.overview.viewSelector.connect('page-changed', () => {
             if (Main.overview.viewSelector._activePage != Main.overview.viewSelector._workspacesPage) {
-                this.actor.add_style_pseudo_class('overview');
+                this.add_style_pseudo_class('overview');
             } else {
-                this.actor.remove_style_pseudo_class('overview');
+                this.remove_style_pseudo_class('overview');
             }
         });
 
         Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.actor.remove_style_pseudo_class('overview');
+            this.remove_style_pseudo_class('overview');
         }));
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._showApplications));
+        this.connect('button-press-event', Lang.bind(this, this._showApplications));
 
     },
 
@@ -130,17 +130,17 @@ const ActivitiesIconMenu = new Lang.Class({
 
         Main.overview.viewSelector.connect('page-changed', () => {
             if (Main.overview.viewSelector._activePage == Main.overview.viewSelector._workspacesPage) {
-                this.actor.add_style_pseudo_class('overview');
+                this.add_style_pseudo_class('overview');
             } else {
-                this.actor.remove_style_pseudo_class('overview');
+                this.remove_style_pseudo_class('overview');
             }
         });
 
         Main.overview.connect('hiding', Lang.bind(this, function() {
-            this.actor.remove_style_pseudo_class('overview');
+            this.remove_style_pseudo_class('overview');
         }));
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._showWorkspaces));
+        this.connect('button-press-event', Lang.bind(this, this._showWorkspaces));
     },
 
     destroy()
