@@ -31,7 +31,6 @@ let activities;
 let applicationsButton;
 let activitiesButton;
 
-
 let applications_overview;
 let activities_overview;
 
@@ -158,21 +157,14 @@ const ActivitiesIconMenu = new Lang.Class({
 function changePage(appsButtonChecked)
 {
     // selecting the same view again will hide the overview
-    if (Main.overview.visible && appsButtonChecked == Main.overview.viewSelector._showAppsButton.checked)
-    {
+    if (Main.overview.visible && appsButtonChecked == Main.overview.viewSelector._showAppsButton.checked) {
         Main.overview.hide();
-        return;
+    } else {
+        Main.overview.viewSelector._showAppsButton.checked = appsButtonChecked;
     }
 
-    Main.overview.viewSelector._showAppsButton.checked = appsButtonChecked;
-
-    if (!Main.overview.visible)
-    {
+    if (!Main.overview.visible) {
         Main.overview.show();
-    }
-    else
-    {
-        Main.overview.viewSelector._showAppsButtonToggled();
     }
 }
 
