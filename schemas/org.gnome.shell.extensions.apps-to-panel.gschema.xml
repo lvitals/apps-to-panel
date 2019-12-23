@@ -21,10 +21,10 @@
         <summary>Activities View</summary>
         <description>Set view for activities to panel.</description>
     </key>
-    <key type="b" name="hide-dash">
-        <default>false</default>
-        <summary>Hide Dash</summary>
-        <description>Hide the dash from the activities overview.</description>
+    <key type="b" name="animate-show-apps">
+        <default>true</default>
+        <summary>Animate Show Apps</summary>
+        <description>Set view for animate show apps.</description>
     </key>
   </schema>
 </schemalist>

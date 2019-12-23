@@ -26,13 +26,12 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Prefs = Me.imports.prefs;
 const Dash = Me.imports.dash;
+const IconGrid = imports.ui.iconGrid;
+const AppDisplay = imports.ui.appDisplay;
+const Meta = imports.gi.Meta;
 
 let activities;
-let applicationsButton;
-let activitiesButton;
 
-let applications_overview;
-let activities_overview;
 
 const ApplicationsIconMenu = new Lang.Class({
     Name: 'ApplicationsIconMenu',
@@ -78,19 +77,50 @@ const ApplicationsIconMenu = new Lang.Class({
         Main.overview.connect('hiding', Lang.bind(this, function() {
             this.remove_style_pseudo_class('overview');
         }));
-
-        this.connect('button-press-event', Lang.bind(this, this._showApplications));
-
+        this.connect('button-press-event', Lang.bind(this, this._onShowAppsButtonToggled));
     },
 
+    _onShowAppsButtonToggled: function() {
+
+        if (Prefs.settings.get_boolean('animate-show-apps')) {
+            this._animeteShow();
+        }
+
+        let selector = Main.overview.viewSelector;
+        if (!Main.overview.visible) {
+            Main.overview.viewSelector.showApps();
+            return;
+        }
+
+        if (Main.overview.visible && !selector._showAppsButton.checked) {
+            Main.overview.viewSelector.showApps();
+            return;
+        }
+
+        if (Main.overview.visible && selector._showAppsButton.checked) {
+            Main.overview.hide();
+            return;
+        }
+    },
+
+    _animeteShow: function() {
+        let visibleView;
+        Main.overview.viewSelector.appDisplay._views.every(function(v, index) {
+            if (v.view.actor.visible) {
+                visibleView = index;
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        let view = Main.overview.viewSelector.appDisplay._views[visibleView].view;
+        let grid = view._grid;
+        grid.animateSpring(IconGrid.AnimationDirection.IN, this);
+    },
     destroy()
     {
         this.parent();
-    },
-
-    _showApplications()
-    {
-        changePage(true);
     },
 });
 
@@ -139,38 +169,65 @@ const ActivitiesIconMenu = new Lang.Class({
             this.remove_style_pseudo_class('overview');
         }));
 
-        this.connect('button-press-event', Lang.bind(this, this._showWorkspaces));
+        this.connect('button-press-event', Lang.bind(this, this._onShowActivitiesButtonToggled));
+    },
+
+    _onShowActivitiesButtonToggled: function() {
+
+        let selector = Main.overview.viewSelector;
+
+        if (!Main.overview.visible) {
+            Main.overview.show();
+            return;
+        }
+
+        if (Main.overview.visible && selector._showAppsButton.checked) {
+            selector._showAppsButton.checked = false;
+            Main.overview.show();
+            return;
+        }
+
+        if (Main.overview.visible) {
+            Main.overview.hide();
+            return;
+        }
+
     },
 
     destroy()
     {
         this.parent();
-    },
-
-    _showWorkspaces()
-    {
-        changePage(false);
     }
 });
 
+function _animateIn(page) {
 
-function changePage(appsButtonChecked)
-{
-    // selecting the same view again will hide the overview
-    if (Main.overview.visible && appsButtonChecked == Main.overview.viewSelector._showAppsButton.checked) {
-        Main.overview.hide();
-    } else {
-        Main.overview.viewSelector._showAppsButton.checked = appsButtonChecked;
+    let oldPage = page;
+
+    if (oldPage) {
+        oldPage.hide();
     }
 
-    if (!Main.overview.visible) {
-        Main.overview.show();
-    }
+    let vs = Main.overview.viewSelector;
+
+    vs.emit('page-empty');
+    vs._activePage.show();
+    vs._fadePageIn();
+}
+
+function _animateOut(page) {
+
+    let oldPage = page;
+
+    let vs = Main.overview.viewSelector;
+
+    vs._animateIn(oldPage);
+    vs._fadePageOut(page);
 }
 
 function init()
 {
-    activities = Main.panel.statusArea['activities'];
+    this.activities = Main.panel.statusArea['activities'];
 
     this.dash = new Dash.Dash();
 
@@ -180,29 +237,26 @@ function init()
 
 function enable()
 {
-    activities.container.hide();
+    this.activities.container.hide();
 
-    if (Prefs.settings.get_boolean('hide-dash')) {
-        this.dash.hideDash();
-    }
     this.dash.hideShowAppsButton();
 
-    applicationsButton = new ApplicationsIconMenu();
-    activitiesButton = new ActivitiesIconMenu();
+    this.showAppsButton = new ApplicationsIconMenu();
+    this.workspacesButton = new ActivitiesIconMenu();
 
-    Main.panel.addToStatusArea('applicationsiconmenu', applicationsButton, 0, 'left');
-    Main.panel.addToStatusArea('activitiesiconmenu', activitiesButton, 1, 'left');
+    Main.overview.viewSelector._animateIn = _animateIn;
+    Main.overview.viewSelector._animateOut = _animateOut;
+
+    Main.panel.addToStatusArea('applicationsiconmenu', this.showAppsButton, 0, 'left');
+    Main.panel.addToStatusArea('activitiesiconmenu', this.workspacesButton, 1, 'left');
 }
 
 function disable()
 {
-    applicationsButton.destroy();
-    activitiesButton.destroy();
-
-    this.dash.showDash();
+    this.showAppsButton.destroy();
+    this.workspacesButton.destroy();
     this.dash.showShowAppsButton();
-
-    activities.container.show();
+    this.activities.container.show();
 }
 
 var _refresh = function ()

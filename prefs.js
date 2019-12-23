@@ -75,7 +75,7 @@ function buildPrefsWidget() {
 
     frame.add(buildSelector('applications-view', _("Show for Applications"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text") }));
     frame.add(buildSelector('activities-view', _("Show for Activities"), { 'icon': _("Icon"), 'text': _("Text"), 'both': _("Icon+Text") }));
-    frame.add(buildSwitcher('hide-dash', _("Hide the dash from the activities overview")));
+    frame.add(buildSwitcher('animate-show-apps', _("Show Animate to Apps")));
 
     frame.show_all();
     return frame;

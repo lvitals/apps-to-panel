@@ -11,14 +11,6 @@ const Dash = new Lang.Class({
         this._dash = Main.overview._dash;
     },
 
-    hideDash: function() {
-        this._dash.actor.hide();
-    },
-
-    showDash: function() {
-        this._dash.actor.show();
-    },
-
     showShowAppsButton: function() {
         this._dash.showAppsButton.visible = true
         this._dash.showAppsButton.set_width(-1)
