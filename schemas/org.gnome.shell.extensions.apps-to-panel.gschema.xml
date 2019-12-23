@@ -22,7 +22,7 @@
         <description>Set view for activities to panel.</description>
     </key>
     <key type="b" name="animate-show-apps">
-        <default>true</default>
+        <default>false</default>
         <summary>Animate Show Apps</summary>
         <description>Set view for animate show apps.</description>
     </key>
